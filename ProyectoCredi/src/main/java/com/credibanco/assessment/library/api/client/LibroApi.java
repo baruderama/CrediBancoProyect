@@ -37,7 +37,7 @@ public class LibroApi {
 	LibroRepository libroRepository;
 
 	@GetMapping("/libro")
-	public ResponseEntity<List<Libro>> getAllTutorials(@RequestParam(required = false) String titulo) {
+	public ResponseEntity<List<Libro>> getAllLibro(@RequestParam(required = false) String titulo) {
 		try {
 			List<Libro> libros = new ArrayList<Libro>();
 
@@ -56,7 +56,7 @@ public class LibroApi {
 	}
 
 	@GetMapping("/libro/{id}")
-	public ResponseEntity<Libro> getAutorById(@PathVariable("id") long id) {
+	public ResponseEntity<Libro> getLibroById(@PathVariable("id") long id) {
 		Optional<Libro> libroData = libroRepository.findById(id);
 
 		if (libroData.isPresent()) {
@@ -67,7 +67,7 @@ public class LibroApi {
 	}
 
 	@PostMapping("/libro")
-	public ResponseEntity<Libro> createAutor(@RequestBody Libro libro) {
+	public ResponseEntity<Libro> createLibro(@RequestBody Libro libro) {
 		try {
 			Libro _libro = libroRepository
 					.save(libro);
@@ -78,7 +78,7 @@ public class LibroApi {
 	}
 
 	@PutMapping("/libro/{id}")
-	public ResponseEntity<Libro> updateAutor(@PathVariable("id") long id, @RequestBody Libro libro) {
+	public ResponseEntity<Libro> updateLibro(@PathVariable("id") long id, @RequestBody Libro libro) {
 		Optional<Libro> libroData = libroRepository.findById(id);
 
 		if (libroData.isPresent()) {
@@ -96,7 +96,7 @@ public class LibroApi {
 	}
 
 	@DeleteMapping("/libro/{id}")
-	public ResponseEntity<HttpStatus> deleteAutor(@PathVariable("id") long id) {
+	public ResponseEntity<HttpStatus> deleteLibro(@PathVariable("id") long id) {
 		try {
 			libroRepository.deleteById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -106,7 +106,7 @@ public class LibroApi {
 	}
 
 	@DeleteMapping("/libros")
-	public ResponseEntity<HttpStatus> deleteAllAutor() {
+	public ResponseEntity<HttpStatus> deleteAllLibro() {
 		try {
 			libroRepository.deleteAll();
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

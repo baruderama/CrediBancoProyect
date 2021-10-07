@@ -37,7 +37,7 @@ public class EditorialApi {
 	EditorialService editorialServicio;
 
 	@GetMapping("/editorial")
-	public ResponseEntity<List<EditorialDto>> getAllTutorials() {
+	public ResponseEntity<List<EditorialDto>> getAllEditoriales() {
 		try {
 			List<EditorialDto> editoriales = editorialServicio.getAllEditoriales();
 
@@ -51,7 +51,7 @@ public class EditorialApi {
 	}
 
 	@GetMapping("/editorial/{id}")
-	public ResponseEntity<EditorialDto> getAutorById(@PathVariable("id") long id) {
+	public ResponseEntity<EditorialDto> getEditorialById(@PathVariable("id") long id) {
 		Optional<EditorialDto> editorialData = editorialServicio.getEditorialById(id);
 
 		if (editorialData.isPresent()) {
@@ -62,7 +62,7 @@ public class EditorialApi {
 	}
 
 	@PostMapping("/editorial")
-	public ResponseEntity<EditorialDto> createAutor(@RequestBody EditorialDto editorialDto) {
+	public ResponseEntity<EditorialDto> createEditorial(@RequestBody EditorialDto editorialDto) {
 		try {
 			EditorialDto _editorial = editorialServicio
 					.createEditorial(editorialDto);
@@ -73,7 +73,7 @@ public class EditorialApi {
 	}
 
 	@PutMapping("/editorial/{id}")
-	public ResponseEntity<EditorialDto> updateAutor(@PathVariable("id") long id, @RequestBody EditorialDto editorial) {
+	public ResponseEntity<EditorialDto> updateEditorial(@PathVariable("id") long id, @RequestBody EditorialDto editorial) {
 		Optional<EditorialDto> editorialData = editorialServicio.getEditorialById(id);
 
 		if (editorialData.isPresent()) {
@@ -90,7 +90,7 @@ public class EditorialApi {
 	}
 
 	@DeleteMapping("/editorial/{id}")
-	public ResponseEntity<HttpStatus> deleteAutor(@PathVariable("id") long id) {
+	public ResponseEntity<HttpStatus> deleteEditorial(@PathVariable("id") long id) {
 		try {
 			editorialServicio.deleteEditorial(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -100,7 +100,7 @@ public class EditorialApi {
 	}
 
 	@DeleteMapping("/editoriales")
-	public ResponseEntity<HttpStatus> deleteAllAutor() {
+	public ResponseEntity<HttpStatus> deleteAllEditorial() {
 		try {
 			editorialServicio.deleteAllEditorial();
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

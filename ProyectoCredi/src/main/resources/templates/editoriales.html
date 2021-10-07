@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Editoriales</title>
+  <title>Editorial</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -364,8 +364,8 @@
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a th:href="@{/biblioteca}">
-              <i class="bi bi-circle"></i><span>Biblioteca</span>
+            <a th:href="@{/libros}">
+              <i class="bi bi-circle"></i><span>Libros</span>
             </a>
           </li>
           <li>
@@ -500,7 +500,7 @@
 
   </aside><!-- End Sidebar-->
 
-  <main id="main" class="main">
+   <main id="main" class="main">
 
     <div class="pagetitle">
       <h1>Editoriales</h1>
@@ -513,31 +513,131 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-6">
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Example Card</h5>
-              <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="col-lg-6">
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Example Card</h5>
-              <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
-            </div>
-          </div>
-
-        </div>
+    
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </section>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@mdo">Autor Nuevo</button>
+
+
+    <table class="table">
+    	<thread>
+    		<tr>
+    			<th>Id</th>
+    			<th>Nombre</th>
+    			<th>Direccion</th>
+    			<th>Telefono</th>
+    			<th>Correo</th>
+    			<th>MaxLibros</th>
+    			<th>Acciones</th>
+    			
+    		</tr>
+    	</thread>
+    	<tbody>
+    		<tr th:each="editorial:${editoriales}">
+    		<td th:text="${editorial.id}"></td>
+    		<td th:text="${editorial.nombre}"></td>
+    		<td th:text="${editorial.Direccion}"></td>
+    		<td th:text="${editorial.Telefono}"></td>
+    		<td th:text="${editorial.correo}"></td>
+    		<td th:text="${editorial.MaxLibros}"></td>
+    		<td>
+    			<div class="btn-group">
+    				<a class="btn btn-primary" id="editButton" data-bs-toggle="modal" data-bs-target="#editModal" >Editar</a>
+    				<a th:href="@{/editoriales/delete/(id=${editorial.id})}"class="btn btn-Danger" id="deleteButton"  >Eliminar</a>
+    			</div>
+    		</td>
+    		</tr>
+    	</tbody>
+    </table>
+    
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editeModalLabel">Editar Editorial</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form th:action="@{/editoriales/update}" method="put">
+        
+        	<div class="form-group">
+            <label for="recipient-name" class="col-form-label">Id:</label>
+            <input type="text" class="form-control" id="idEdit" name="id" >
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Nombre:</label>
+            <input type="text" class="form-control" id="nombreEdit" name="nombre">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Direccion:</label>
+            <input type="text" class="form-control" id="fechaNacimientoEdit" name="direccion">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Telefono:</label>
+            <input type="text" class="form-control" id="ciudadEdit" name="telefono">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Correo:</label>
+            <input type="text" class="form-control" id="correoEdit" name="correo">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Maxlibros:</label>
+            <input type="text" class="form-control" id="correoEdit" name="maxLibros">
+          </div>
+          
+          <div class="form-group">
+          <button type="submit" class="btn btn-primary">editar Editorial</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">confirmacion de eliminacion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Estas seguro que quieres borrarlo?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+    
+   
 
   </main><!-- End #main -->
 
@@ -554,10 +654,65 @@
       Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
     </div>
   </footer><!-- End Footer -->
+  
+  
+  
+  
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form th:action="@{/editoriales}" method="post">
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Nombre:</label>
+            <input type="text" class="form-control" id="recipient-name" name="nombre">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Direccion:</label>
+            <input type="text" class="form-control" id="recipient-name" name="direccion">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Telefono:</label>
+            <input type="text" class="form-control" id="recipient-name" name="telefono">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Correo:</label>
+            <input type="text" class="form-control" id="recipient-name" name="correo">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">MaxLibros:</label>
+            <input type="text" class="form-control" id="recipient-name" name="maxLibros">
+          </div>
+          
+          <div class="form-group">
+          <button type="submit" class="btn btn-primary">Agregar Editorial</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  
+
   <!-- Vendor JS Files -->
+  
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="assets/vendor/quill/quill.min.js"></script>
@@ -566,9 +721,14 @@
   <script src="assets/vendor/chart.js/chart.min.js"></script>
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/js/autor.js"></script>
+  
+  
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  
+ <!-- <script language="JavaScript" type="text/javascript" src="assets/js/autor.js"></script> -->
 
 </body>
 
