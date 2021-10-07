@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.credibanco.assessment.library.dto.AutorDto;
+import com.credibanco.assessment.library.dto.EditorialDto;
 import com.credibanco.assessment.library.service.impl.AutorService;
 
 
@@ -60,6 +61,17 @@ public class AutorApi {
 
 		if (AutorData.isPresent()) {
 			return new ResponseEntity<>(AutorData.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/autor/{nombre}")
+	public ResponseEntity<AutorDto> getAutorByNombre(@PathVariable("nombre") String nombre) {
+		Optional<AutorDto> autorData = autorService.getAutorByNombre(nombre);
+
+		if (autorData.isPresent()) {
+			return new ResponseEntity<>(autorData.get(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

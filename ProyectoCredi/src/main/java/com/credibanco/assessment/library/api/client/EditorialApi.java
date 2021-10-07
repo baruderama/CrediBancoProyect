@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.credibanco.assessment.library.dto.AutorDto;
 import com.credibanco.assessment.library.dto.EditorialDto;
+import com.credibanco.assessment.library.dto.LibroDto;
 import com.credibanco.assessment.library.model1.Editorial;
 import com.credibanco.assessment.library.repository.EditorialRepository;
 import com.credibanco.assessment.library.service.impl.EditorialService;
@@ -53,6 +54,17 @@ public class EditorialApi {
 	@GetMapping("/editorial/{id}")
 	public ResponseEntity<EditorialDto> getEditorialById(@PathVariable("id") long id) {
 		Optional<EditorialDto> editorialData = editorialServicio.getEditorialById(id);
+
+		if (editorialData.isPresent()) {
+			return new ResponseEntity<>(editorialData.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/editorial/{nombre}")
+	public ResponseEntity<EditorialDto> getEditorialById(@PathVariable("nombre") String nombre) {
+		Optional<EditorialDto> editorialData = editorialServicio.geEditorialByNombre(nombre);
 
 		if (editorialData.isPresent()) {
 			return new ResponseEntity<>(editorialData.get(), HttpStatus.OK);

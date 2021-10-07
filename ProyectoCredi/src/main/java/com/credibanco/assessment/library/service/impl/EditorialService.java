@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.credibanco.assessment.library.dto.AutorDto;
 import com.credibanco.assessment.library.dto.EditorialDto;
+import com.credibanco.assessment.library.dto.LibroDto;
 import com.credibanco.assessment.library.model1.Autor;
 import com.credibanco.assessment.library.model1.Editorial;
+import com.credibanco.assessment.library.model1.Libro;
 import com.credibanco.assessment.library.repository.EditorialRepository;
 import com.credibanco.assessment.library.serviceInter.EditorialServiceInterface;
 
@@ -73,6 +75,15 @@ private Editorial convertDtoToEntity(EditorialDto editorialDto) {
 	public Optional<EditorialDto> getEditorialById( long id) {
 		Optional<Editorial> ediOptional= editorialRepository.findById(id);
 		Editorial editorial=ediOptional.get();
+		EditorialDto ediDto=convertEntityToDto(editorial);
+		Optional<EditorialDto> ediDtoOptional= Optional.of(ediDto);
+		
+		return ediDtoOptional;
+	}
+	
+	public Optional<EditorialDto> geEditorialByNombre(String nombre) {
+		Optional<List<Editorial>> editorialOptional= Optional.of(editorialRepository.findByNombre(nombre));
+		Editorial editorial=(Editorial) editorialOptional.get();
 		EditorialDto ediDto=convertEntityToDto(editorial);
 		Optional<EditorialDto> ediDtoOptional= Optional.of(ediDto);
 		

@@ -20,8 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.credibanco.assessment.library.dto.EditorialDto;
+import com.credibanco.assessment.library.dto.LibroDto;
 import com.credibanco.assessment.library.model1.Libro;
 import com.credibanco.assessment.library.repository.LibroRepository;
+import com.credibanco.assessment.library.service.impl.EditorialService;
+import com.credibanco.assessment.library.service.impl.LibroService;
 
 
 
@@ -34,17 +38,14 @@ public class LibroApi {
 	
 
 	@Autowired
-	LibroRepository libroRepository;
+	LibroService libroServicio;
 
 	@GetMapping("/libro")
-	public ResponseEntity<List<Libro>> getAllLibro(@RequestParam(required = false) String titulo) {
+	public ResponseEntity<List<LibroDto>> getAllLibro() {
 		try {
-			List<Libro> libros = new ArrayList<Libro>();
-
-			if (titulo == null)
-				libroRepository.findAll().forEach(libros::add);
-			else
-				libroRepository.findByTitulo(titulo).forEach(libros::add);
+			
+			List<LibroDto> libros = libroServicio.getAllLibro();
+			
 
 			if (libros.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -56,8 +57,19 @@ public class LibroApi {
 	}
 
 	@GetMapping("/libro/{id}")
-	public ResponseEntity<Libro> getLibroById(@PathVariable("id") long id) {
-		Optional<Libro> libroData = libroRepository.findById(id);
+	public ResponseEntity<LibroDto> getLibroById(@PathVariable("id") long id) {
+		Optional<LibroDto> libroData = libroServicio.getLibroById(id);
+
+		if (libroData.isPresent()) {
+			return new ResponseEntity<>(libroData.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/libro/{titulo}")
+	public ResponseEntity<LibroDto> getLibroById(@PathVariable("titulo") String titulo) {
+		Optional<LibroDto> libroData = libroServicio.getLibroByTitulo(titulo);
 
 		if (libroData.isPresent()) {
 			return new ResponseEntity<>(libroData.get(), HttpStatus.OK);
@@ -67,10 +79,10 @@ public class LibroApi {
 	}
 
 	@PostMapping("/libro")
-	public ResponseEntity<Libro> createLibro(@RequestBody Libro libro) {
+	public ResponseEntity<LibroDto> createLibro(@RequestBody LibroDto libroDto) {
 		try {
-			Libro _libro = libroRepository
-					.save(libro);
+			LibroDto _libro = libroServicio
+					.createLibro(libroDto);
 			return new ResponseEntity<>(_libro, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -78,18 +90,18 @@ public class LibroApi {
 	}
 
 	@PutMapping("/libro/{id}")
-	public ResponseEntity<Libro> updateLibro(@PathVariable("id") long id, @RequestBody Libro libro) {
-		Optional<Libro> libroData = libroRepository.findById(id);
+	public ResponseEntity<LibroDto> updateLibro(@PathVariable("id") long id, @RequestBody LibroDto libroDto) {
+		Optional<LibroDto> libroData = libroServicio.getLibroById(id);
 
 		if (libroData.isPresent()) {
-			Libro _libro = libroData.get();
-			_libro.setTitulo(libro.getTitulo());
-			_libro.setAnio(libro.getAnio());
-			_libro.setGenero(libro.getGenero());
-			_libro.setNoPaginas(libro.getNoPaginas());
-			_libro.setAutores(libro.getAutores());
-			_libro.setEditoriales(libro.getEditoriales());
-			return new ResponseEntity<>(libroRepository.save(_libro), HttpStatus.OK);
+			LibroDto _libro = libroData.get();
+			_libro.setTitulo(libroDto.getTitulo());
+			_libro.setAnio(libroDto.getAnio());
+			_libro.setGenero(libroDto.getGenero());
+			_libro.setNoPaginas(libroDto.getNoPaginas());
+			_libro.setAutores(libroDto.getAutores());
+			_libro.setEditoriales(libroDto.getEditoriales());
+			return new ResponseEntity<>(libroServicio.createLibro(_libro), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -98,7 +110,7 @@ public class LibroApi {
 	@DeleteMapping("/libro/{id}")
 	public ResponseEntity<HttpStatus> deleteLibro(@PathVariable("id") long id) {
 		try {
-			libroRepository.deleteById(id);
+			libroServicio.deleteLibro(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -108,7 +120,7 @@ public class LibroApi {
 	@DeleteMapping("/libros")
 	public ResponseEntity<HttpStatus> deleteAllLibro() {
 		try {
-			libroRepository.deleteAll();
+			libroServicio.deleteAllLibro();
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -116,19 +128,7 @@ public class LibroApi {
 
 	}
 
-//	@GetMapping("/tutorials/published")
-//	public ResponseEntity<List<Tutorial>> findByPublished() {
-//		try {
-//			List<Tutorial> tutorials = tutorialRepository.findByPublished(true);
-//
-//			if (tutorials.isEmpty()) {
-//				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//			}
-//			return new ResponseEntity<>(tutorials, HttpStatus.OK);
-//		} catch (Exception e) {
-//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//	}
+
 
 }
 

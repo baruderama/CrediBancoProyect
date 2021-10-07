@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.credibanco.assessment.library.dto.AutorDto;
 import com.credibanco.assessment.library.dto.EditorialDto;
 import com.credibanco.assessment.library.dto.LibroDto;
+import com.credibanco.assessment.library.model1.Autor;
 import com.credibanco.assessment.library.model1.Editorial;
 import com.credibanco.assessment.library.model1.Libro;
 import com.credibanco.assessment.library.repository.LibroRepository;
@@ -69,6 +71,15 @@ private Libro convertDtoToEntity(LibroDto libroDto) {
 	public Optional<LibroDto> getLibroById(long id) {
 		Optional<Libro> libroOptional= libroRepository.findById(id);
 		Libro libro=libroOptional.get();
+		LibroDto libDto=convertEntityToDto(libro);
+		Optional<LibroDto> libDtoOptional= Optional.of(libDto);
+		
+		return libDtoOptional;
+	}
+	
+	public Optional<LibroDto> getLibroByTitulo(String titulo) {
+		Optional<List<Libro>> libroOptional= Optional.of(libroRepository.findByTitulo(titulo));
+		Libro libro=(Libro) libroOptional.get();
 		LibroDto libDto=convertEntityToDto(libro);
 		Optional<LibroDto> libDtoOptional= Optional.of(libDto);
 		

@@ -541,27 +541,28 @@
     	<thread>
     		<tr>
     			<th>Id</th>
-    			<th>Nombre</th>
-    			<th>Fecha de nacimiento</th>
-    			<th>Ciudad</th>
-    			<th>Correo</th>
-    			<th>Libros</th>
-    			<th>Acciones</th>
+    			<th>Titulo</th>
+    			<th>Año</th>
+    			<th>Genero</th>
+    			<th>No Paginas</th>
+    			<th>Editorial</th>
+    			<th>Autor</th>
     			
     		</tr>
     	</thread>
     	<tbody>
-    		<tr th:each="autor:${autores}">
-    		<td th:text="${autor.id}"></td>
-    		<td th:text="${autor.nombre}"></td>
-    		<td th:text="${autor.fechaNacimiento}"></td>
-    		<td th:text="${autor.ciudad}"></td>
-    		<td th:text="${autor.correo}"></td>
-    		<td th:text="${autor.librosAutor}"></td>
+    		<tr th:each="libro:${libros}">
+    		<td th:text="${libro.id}"></td>
+    		<td th:text="${libro.titulo}"></td>
+    		<td th:text="${libro.anio}"></td>
+    		<td th:text="${libro.genero}"></td>
+    		<td th:text="${libro.noPaginas}"></td>
+    		<td th:text="${libro.editoriales}"></td>
+    		<td th:text="${libro.autores}"></td>
     		<td>
     			<div class="btn-group">
     				<a class="btn btn-primary" id="editButton" data-bs-toggle="modal" data-bs-target="#editModal" >Editar</a>
-    				<a th:href="@{/autores/delete/(id=${autor.id})}"class="btn btn-Danger" id="deleteButton"  >Eliminar</a>
+    				<a th:href="@{/libros/delete/(id=${libro.id})}"class="btn btn-Danger" id="deleteButton"  >Eliminar</a>
     			</div>
     		</td>
     		</tr>
@@ -578,27 +579,27 @@
         </button>
       </div>
       <div class="modal-body">
-        <form th:action="@{/autores/update}" method="put">
+        <form th:action="@{/libros/update}" method="put">
         
         	<div class="form-group">
             <label for="recipient-name" class="col-form-label">Id:</label>
             <input type="text" class="form-control" id="idEdit" name="id" >
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Nombre:</label>
-            <input type="text" class="form-control" id="nombreEdit" name="nombre">
+            <label for="recipient-name" class="col-form-label">titulo:</label>
+            <input type="text" class="form-control" id="nombreEdit" name="titulo">
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Fecha de Nacimiento:</label>
-            <input type="text" class="form-control" id="fechaNacimientoEdit" name="fechaNacimiento">
+            <label for="recipient-name" class="col-form-label">Anio:</label>
+            <input type="text" class="form-control" id="fechaNacimientoEdit" name="anio">
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Ciudad:</label>
-            <input type="text" class="form-control" id="ciudadEdit" name="ciudad">
+            <label for="recipient-name" class="col-form-label">Genero:</label>
+            <input type="text" class="form-control" id="ciudadEdit" name="genero">
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Correo:</label>
-            <input type="text" class="form-control" id="correoEdit" name="correo">
+            <label for="recipient-name" class="col-form-label">No Paginas:</label>
+            <input type="text" class="form-control" id="correoEdit" name="noPaginas">
           </div>
           
           <div class="form-group">
@@ -669,22 +670,22 @@
         </button>
       </div>
       <div class="modal-body">
-        <form th:action="@{/autores}" method="post">
+        <form th:action="@{/libros}" method="post">
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Nombre:</label>
-            <input type="text" class="form-control" id="recipient-name" name="nombre">
+            <label for="recipient-name" class="col-form-label">titulo:</label>
+            <input type="text" class="form-control" id="recipient-name" name="titulo">
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Fecha de Nacimiento:</label>
-            <input type="text" class="form-control" id="recipient-name" name="fechaNacimiento">
+            <label for="recipient-name" class="col-form-label">anio:</label>
+            <input type="text" class="form-control" id="recipient-name" name="anio">
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Ciudad:</label>
-            <input type="text" class="form-control" id="recipient-name" name="ciudad">
+            <label for="recipient-name" class="col-form-label">Genero:</label>
+            <input type="text" class="form-control" id="recipient-name" name="genero">
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Correo:</label>
-            <input type="text" class="form-control" id="recipient-name" name="correo">
+            <label for="recipient-name" class="col-form-label">No Paginas:</label>
+            <input type="text" class="form-control" id="recipient-name" name="noPaginas">
           </div>
           
           <div class="form-group">

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 
 import com.credibanco.assessment.library.dto.AutorDto;
+import com.credibanco.assessment.library.dto.EditorialDto;
 import com.credibanco.assessment.library.model1.Autor;
+import com.credibanco.assessment.library.model1.Editorial;
 import com.credibanco.assessment.library.repository.AutorRepository;
 import com.credibanco.assessment.library.serviceInter.AutorServiceInterface;
 
@@ -60,6 +62,15 @@ private Autor convertDtoToEntity(AutorDto autorDto) {
 		
 		Optional<Autor> auOptional= autorRepository.findById(id);
 		Autor autor=auOptional.get();
+		AutorDto auDto=convertEntityToDto(autor);
+		Optional<AutorDto> auDtoOptional= Optional.of(auDto);
+		
+		return auDtoOptional;
+	}
+	
+	public Optional<AutorDto> getAutorByNombre(String nombre) {
+		Optional<List<Autor>> autorOptional= Optional.of(autorRepository.findByNombre(nombre));
+		Autor autor=(Autor) autorOptional.get();
 		AutorDto auDto=convertEntityToDto(autor);
 		Optional<AutorDto> auDtoOptional= Optional.of(auDto);
 		
