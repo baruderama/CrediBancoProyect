@@ -29,7 +29,7 @@ public class Libro {
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private long id;
 	
-	@Column(name="titulo",nullable= false)
+	@Column(name="titulo",nullable= false,unique=true)
 	private String titulo;
 	
 	@Column(name="anio",nullable= false)

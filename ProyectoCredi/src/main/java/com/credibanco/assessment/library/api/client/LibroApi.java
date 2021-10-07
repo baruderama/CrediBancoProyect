@@ -1,4 +1,6 @@
-package com.credibanco.assessment.library.controller1;
+package com.credibanco.assessment.library.api.client;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,87 +20,95 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.credibanco.assessment.library.DTOs.AutorDTO;
-import com.credibanco.assessment.library.model1.Autor;
+import com.credibanco.assessment.library.model1.Libro;
+import com.credibanco.assessment.library.repository.LibroRepository;
 
 
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api")
-public class AutorController {
+public class LibroApi {
+	
+	
+	
 
 	@Autowired
-	AutorDTO autorRepository;
+	LibroRepository libroRepository;
 
-	@GetMapping("/autor")
-	public ResponseEntity<List<Autor>> getAllTutorials( ) {
+	@GetMapping("/libro")
+	public ResponseEntity<List<Libro>> getAllTutorials(@RequestParam(required = false) String titulo) {
 		try {
-			List<Autor> autores = autorRepository.findAll();
+			List<Libro> libros = new ArrayList<Libro>();
 
+			if (titulo == null)
+				libroRepository.findAll().forEach(libros::add);
+			else
+				libroRepository.findByTitulo(titulo).forEach(libros::add);
 
-			if (autores.isEmpty()) {
+			if (libros.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
-
-			return new ResponseEntity<>(autores, HttpStatus.OK);
+			return new ResponseEntity<>(libros, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@GetMapping("/autor/{id}")
-	public ResponseEntity<Autor> getAutorById(@PathVariable("id") long id) {
-		Optional<Autor> AutorData = autorRepository.findById(id);
+	@GetMapping("/libro/{id}")
+	public ResponseEntity<Libro> getAutorById(@PathVariable("id") long id) {
+		Optional<Libro> libroData = libroRepository.findById(id);
 
-		if (AutorData.isPresent()) {
-			return new ResponseEntity<>(AutorData.get(), HttpStatus.OK);
+		if (libroData.isPresent()) {
+			return new ResponseEntity<>(libroData.get(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
-	@PostMapping("/autor")
-	public ResponseEntity<Autor> createAutor(@RequestBody Autor autor) {
+	@PostMapping("/libro")
+	public ResponseEntity<Libro> createAutor(@RequestBody Libro libro) {
 		try {
-			Autor _autor = autorRepository
-					.save(autor);
-			return new ResponseEntity<>(_autor, HttpStatus.CREATED);
+			Libro _libro = libroRepository
+					.save(libro);
+			return new ResponseEntity<>(_libro, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@PutMapping("/autor/{id}")
-	public ResponseEntity<Autor> updateAutor(@PathVariable("id") long id, @RequestBody Autor autor) {
-		Optional<Autor> tutorialData = autorRepository.findById(id);
+	@PutMapping("/libro/{id}")
+	public ResponseEntity<Libro> updateAutor(@PathVariable("id") long id, @RequestBody Libro libro) {
+		Optional<Libro> libroData = libroRepository.findById(id);
 
-		if (tutorialData.isPresent()) {
-			Autor _autor = tutorialData.get();
-			_autor.setNombre(autor.getNombre());
-			_autor.setCiudad(autor.getCiudad());
-			_autor.setCorreo(autor.getCorreo());
-			_autor.setFechaNacimiento(autor.getFechaNacimiento());
-			return new ResponseEntity<>(autorRepository.save(_autor), HttpStatus.OK);
+		if (libroData.isPresent()) {
+			Libro _libro = libroData.get();
+			_libro.setTitulo(libro.getTitulo());
+			_libro.setAnio(libro.getAnio());
+			_libro.setGenero(libro.getGenero());
+			_libro.setNoPaginas(libro.getNoPaginas());
+			_libro.setAutores(libro.getAutores());
+			_libro.setEditoriales(libro.getEditoriales());
+			return new ResponseEntity<>(libroRepository.save(_libro), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
-	@DeleteMapping("/autor/{id}")
+	@DeleteMapping("/libro/{id}")
 	public ResponseEntity<HttpStatus> deleteAutor(@PathVariable("id") long id) {
 		try {
-			autorRepository.deleteById(id);
+			libroRepository.deleteById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@DeleteMapping("/tutorials")
+	@DeleteMapping("/libros")
 	public ResponseEntity<HttpStatus> deleteAllAutor() {
 		try {
-			autorRepository.deleteAll();
+			libroRepository.deleteAll();
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -121,3 +131,4 @@ public class AutorController {
 //	}
 
 }
+

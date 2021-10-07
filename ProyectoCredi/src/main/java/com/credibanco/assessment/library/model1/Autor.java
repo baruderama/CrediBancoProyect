@@ -29,7 +29,7 @@ public class Autor {
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private long id;
 	
-	@Column(name="nombre",nullable= false)
+	@Column(name="nombre",nullable= false, unique=true)
 	private String nombre;
 	
 	@Column(name="fechanacimiento")

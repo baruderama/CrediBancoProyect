@@ -9,25 +9,25 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import com.credibanco.assessment.library.DTOs.AutorDTO;
-import com.credibanco.assessment.library.DTOs.EditorialDTO;
-import com.credibanco.assessment.library.DTOs.LibroDTO;
 import com.credibanco.assessment.library.model1.Autor;
 import com.credibanco.assessment.library.model1.Editorial;
 import com.credibanco.assessment.library.model1.Libro;
+import com.credibanco.assessment.library.repository.AutorRepository;
+import com.credibanco.assessment.library.repository.EditorialRepository;
+import com.credibanco.assessment.library.repository.LibroRepository;
 
 @SpringBootApplication
 @EnableJpaAuditing
 public class ProyectoCrediApplication implements CommandLineRunner {
 	
 	@Autowired
-	private AutorDTO autorDto;
+	private AutorRepository autorDto;
 	
 	@Autowired
-	private EditorialDTO editorialDto;
+	private EditorialRepository editorialDto;
 	
 	@Autowired
-	private LibroDTO libroDto;
+	private LibroRepository libroDto;
 	
 	
 

@@ -1,4 +1,4 @@
-package com.credibanco.assessment.library.controller1;
+package com.credibanco.assessment.library.api.client;
 
 
 
@@ -20,92 +20,89 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.credibanco.assessment.library.DTOs.LibroDTO;
-import com.credibanco.assessment.library.model1.Libro;
+import com.credibanco.assessment.library.dto.AutorDto;
+import com.credibanco.assessment.library.dto.EditorialDto;
+import com.credibanco.assessment.library.model1.Editorial;
+import com.credibanco.assessment.library.repository.EditorialRepository;
+import com.credibanco.assessment.library.service.impl.EditorialService;
 
 
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api")
-public class LibroController {
+public class EditorialApi {
 
 	@Autowired
-	LibroDTO libroRepository;
+	EditorialService editorialServicio;
 
-	@GetMapping("/libro")
-	public ResponseEntity<List<Libro>> getAllTutorials(@RequestParam(required = false) String titulo) {
+	@GetMapping("/editorial")
+	public ResponseEntity<List<EditorialDto>> getAllTutorials() {
 		try {
-			List<Libro> libros = new ArrayList<Libro>();
+			List<EditorialDto> editoriales = editorialServicio.getAllEditoriales();
 
-			if (titulo == null)
-				libroRepository.findAll().forEach(libros::add);
-			else
-				libroRepository.findByTitulo(titulo).forEach(libros::add);
-
-			if (libros.isEmpty()) {
+			if (editoriales.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
-			return new ResponseEntity<>(libros, HttpStatus.OK);
+			return new ResponseEntity<>(editoriales, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@GetMapping("/libro/{id}")
-	public ResponseEntity<Libro> getAutorById(@PathVariable("id") long id) {
-		Optional<Libro> libroData = libroRepository.findById(id);
+	@GetMapping("/editorial/{id}")
+	public ResponseEntity<EditorialDto> getAutorById(@PathVariable("id") long id) {
+		Optional<EditorialDto> editorialData = editorialServicio.getEditorialById(id);
 
-		if (libroData.isPresent()) {
-			return new ResponseEntity<>(libroData.get(), HttpStatus.OK);
+		if (editorialData.isPresent()) {
+			return new ResponseEntity<>(editorialData.get(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
-	@PostMapping("/libro")
-	public ResponseEntity<Libro> createAutor(@RequestBody Libro libro) {
+	@PostMapping("/editorial")
+	public ResponseEntity<EditorialDto> createAutor(@RequestBody EditorialDto editorialDto) {
 		try {
-			Libro _libro = libroRepository
-					.save(libro);
-			return new ResponseEntity<>(_libro, HttpStatus.CREATED);
+			EditorialDto _editorial = editorialServicio
+					.createEditorial(editorialDto);
+			return new ResponseEntity<>(_editorial, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@PutMapping("/libro/{id}")
-	public ResponseEntity<Libro> updateAutor(@PathVariable("id") long id, @RequestBody Libro libro) {
-		Optional<Libro> libroData = libroRepository.findById(id);
+	@PutMapping("/editorial/{id}")
+	public ResponseEntity<EditorialDto> updateAutor(@PathVariable("id") long id, @RequestBody EditorialDto editorial) {
+		Optional<EditorialDto> editorialData = editorialServicio.getEditorialById(id);
 
-		if (libroData.isPresent()) {
-			Libro _libro = libroData.get();
-			_libro.setTitulo(libro.getTitulo());
-			_libro.setAnio(libro.getAnio());
-			_libro.setGenero(libro.getGenero());
-			_libro.setNoPaginas(libro.getNoPaginas());
-			_libro.setAutores(libro.getAutores());
-			_libro.setEditoriales(libro.getEditoriales());
-			return new ResponseEntity<>(libroRepository.save(_libro), HttpStatus.OK);
+		if (editorialData.isPresent()) {
+			EditorialDto _editorial = editorialData.get();
+			_editorial.setNombre(editorial.getNombre());
+			_editorial.setDireccion(editorial.getDireccion());
+			_editorial.setTelefono(editorial.getTelefono());
+			_editorial.setCorreo(editorial.getCorreo());
+			_editorial.setMaxLibros(editorial.getMaxLibros());
+			return new ResponseEntity<>(editorialServicio.createEditorial(_editorial), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
-	@DeleteMapping("/libro/{id}")
+	@DeleteMapping("/editorial/{id}")
 	public ResponseEntity<HttpStatus> deleteAutor(@PathVariable("id") long id) {
 		try {
-			libroRepository.deleteById(id);
+			editorialServicio.deleteEditorial(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@DeleteMapping("/libros")
+	@DeleteMapping("/editoriales")
 	public ResponseEntity<HttpStatus> deleteAllAutor() {
 		try {
-			libroRepository.deleteAll();
+			editorialServicio.deleteAllEditorial();
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
